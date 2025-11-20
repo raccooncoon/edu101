@@ -8,15 +8,15 @@ export const jsCurriculum = [
             {
                 title: "Hello, JavaScript!",
                 content: "자바스크립트는 웹 페이지를 동적으로 만들어주는 프로그래밍 언어입니다. 브라우저 개발자 도구(F12)의 Console 탭에서 바로 실행해볼 수 있습니다.",
-                code: `console.log("Hello, World!");
+                code: `console.log("Hello, ^^World!^^");
 console.warn("This is a warning!");
 console.error("This is an error!");`
             },
             {
                 title: "변수 선언 (let, const)",
                 content: "데이터를 저장할 공간인 변수를 만듭니다. ES6부터는 var 대신 let(변경 가능)과 const(변경 불가능)를 주로 사용합니다. 변수명은 의미있게 짓는 것이 중요합니다 (camelCase 사용).",
-                code: `let userName = "Alice"; // 변경 가능
-const PI = 3.14;        // 변경 불가능 (상수)
+                code: `^^let^^ userName = "Alice"; // 변경 가능
+^^const^^ PI = 3.14;        // 변경 불가능 (상수)
 userName = "Bob";       // 가능
 // PI = 3.14159;        // 에러 발생! Assignment to constant variable.`
             },
@@ -29,8 +29,8 @@ const isDone = true;      // Boolean
 const empty = null;       // Object (초기화된 빈 값)
 let notDefined;           // Undefined (정의되지 않음)
 
-console.log(typeof message); // "string"
-console.log(typeof count);   // "number"`
+console.log(^^typeof^^ message); // "string"
+console.log(^^typeof^^ count);   // "number"`
             },
             {
                 title: "템플릿 리터럴 (Template Literals)",
@@ -40,7 +40,7 @@ const year = 2024;
 // 기존 방식
 console.log("Hello, " + name + " " + year);
 // 템플릿 리터럴
-console.log(\`Hello, \${name} \${year}\`);`
+console.log(\`Hello, ^^\${name}^^ ^^\${year}^^\`);`
             }
         ],
         challenge: {
@@ -65,22 +65,22 @@ console.log(\`제 이름은 \${name}이고, 직업은 \${job}입니다.\`);`
                 code: `console.log(10 % 3);      // 1 (나머지)
 console.log(2 ** 3);      // 8 (거듭제곱)
 console.log(10 == "10");  // true (값만 비교)
-console.log(10 === "10"); // false (타입까지 비교 - 권장)`
+console.log(10 ^^===^^ "10"); // false (타입까지 비교 - 권장)`
             },
             {
                 title: "논리 연산자와 Truthy/Falsy",
                 content: "AND(&&), OR(||), NOT(!) 연산자와 자바스크립트에서 거짓으로 취급되는 값(0, '', null, undefined, NaN)을 이해합니다.",
                 code: `const user = { name: "Alice" };
 // 단축 평가 (Short-circuit evaluation)
-const name = user.name || "Guest"; // user.name이 없으면 "Guest"
-const isAdult = true && true;      // true`
+const name = user.name ^^||^^ "Guest"; // user.name이 없으면 "Guest"
+const isAdult = true ^^&&^^ true;      // true`
             },
             {
                 title: "조건문 (if-else, switch)",
                 content: "조건에 따라 실행 흐름을 분기합니다. 조건이 많을 때는 switch문이 가독성이 좋을 수 있습니다.",
                 code: `const rank = "B";
 
-switch (rank) {
+switch (^^rank^^) {
   case "A":
     console.log("최고에요!");
     break;
@@ -95,7 +95,7 @@ switch (rank) {
                 title: "삼항 연산자",
                 content: "간단한 if-else 문을 한 줄로 표현할 때 유용합니다.",
                 code: `const age = 20;
-const status = age >= 18 ? "성인" : "미성년자";
+const status = age >= 18 ^^?^^ "성인" ^^:^^ "미성년자";
 console.log(status);`
             }
         ],
@@ -129,7 +129,7 @@ console.log(grade);
                 title: "for 반복문과 break/continue",
                 content: "가장 기본적인 반복문입니다. break로 반복을 중단하거나 continue로 다음 반복으로 건너뛸 수 있습니다.",
                 code: `for (let i = 1; i <= 5; i++) {
-    if (i === 3) continue; // 3은 건너뜀
+    if (i === 3) ^^continue^^; // 3은 건너뜀
     console.log(i);        // 1, 2, 4, 5
 } `
             },
@@ -138,13 +138,13 @@ console.log(grade);
                 content: "배열이나 객체를 순회할 때 사용하는 모던한 반복문입니다.",
                 code: `const fruits = ["Apple", "Banana"];
 // 배열 값 순회
-for (const fruit of fruits) {
+for (const fruit ^^of^^ fruits) {
     console.log(fruit);
 }
 
 const user = { name: "Kim", age: 30 };
 // 객체 키 순회
-for (const key in user) {
+for (const key ^^in^^ user) {
     console.log(\`\${key}: \${user[key]}\`);
 }`
             },
@@ -152,7 +152,7 @@ for (const key in user) {
                 title: "while 반복문",
                 content: "조건이 참인 동안 계속 실행됩니다. 무한 루프에 빠지지 않도록 주의해야 합니다.",
                 code: `let count = 0;
-while (count < 3) {
+while (^^count < 3^^) {
   console.log(count);
   count++;
 }`
@@ -188,7 +188,7 @@ console.log("짝수의 합:", sum);`
     const sub = function (a, b) { return a - b; };
 
     // 화살표 함수 (return 생략 가능)
-    const mul = (a, b) => a * b; `
+    const mul = (a, b) ^^=>^^ a * b; `
             },
             {
                 title: "매개변수 기본값과 Rest 파라미터",
@@ -197,7 +197,7 @@ console.log("짝수의 합:", sum);`
         console.log(\`Hello, \${name}\`);
 }
 
-function sum(...numbers) {
+function sum(^^...numbers^^) {
   return numbers.reduce((acc, cur) => acc + cur, 0);
 }
 console.log(sum(1, 2, 3, 4)); // 10`
@@ -245,20 +245,20 @@ console.log(max(1, 5, 3, 9, 2)); // 9`
                 code: `const nums = [1, 2, 3, 4, 5];
 
         // 제곱하기
-        const squared = nums.map(n => n * n); // [1, 4, 9, 16, 25]
+        const squared = nums.^^map^^(n => n * n); // [1, 4, 9, 16, 25]
 
         // 짝수만 필터링
-        const evens = nums.filter(n => n % 2 === 0); // [2, 4]
+        const evens = nums.^^filter^^(n => n % 2 === 0); // [2, 4]
 
         // 합계 구하기
-        const sum = nums.reduce((acc, cur) => acc + cur, 0); // 15`
+        const sum = nums.^^reduce^^((acc, cur) => acc + cur, 0); // 15`
             },
             {
                 title: "객체 조작 (Object.keys, values, entries)",
                 content: "객체의 키나 값들을 배열로 변환하여 다루기 쉽게 만듭니다.",
                 code: `const user = { name: "Alice", age: 25 };
 
-console.log(Object.keys(user));   // ["name", "age"]
+console.log(^^Object.keys^^(user));   // ["name", "age"]
 console.log(Object.values(user)); // ["Alice", 25]
 console.log(Object.entries(user)); // [["name", "Alice"], ["age", 25]]`
             },
@@ -269,9 +269,9 @@ console.log(Object.entries(user)); // [["name", "Alice"], ["age", 25]]`
   id: 1, 
   info: { name: "Kim", skill: "JS" } 
 };
-const { info: { name } } = user; // "Kim"
+const ^^ { info: { name } } ^^ = user; // "Kim"
 
-const updatedUser = { ...user, active: true }; // 객체 복사 및 추가`
+const updatedUser = { ^^...user^^, active: true }; // 객체 복사 및 추가`
             }
         ],
         challenge: {
@@ -301,23 +301,23 @@ console.log("총액:", total); // 8500`
                 content: "객체의 속성이 존재하는지 확인하지 않고도 안전하게 접근할 수 있습니다. 없으면 undefined를 반환합니다.",
                 code: `const user = {};
         // console.log(user.address.street); // 에러 발생!
-        console.log(user.address?.street); // undefined (에러 없음)`
+        console.log(user.address^^?.^^street); // undefined (에러 없음)`
             },
             {
                 title: "Nullish 병합 연산자 (??)",
                 content: "|| 연산자와 달리, 오직 null이나 undefined일 때만 오른쪽 값을 반환합니다. (0이나 ''은 유효한 값으로 취급)",
                 code: `const count = 0;
 const num1 = count || 10; // 10 (0을 거짓으로 취급)
-const num2 = count ?? 10; // 0 (0은 null/undefined가 아님)`
+const num2 = count ^^??^^ 10; // 0 (0은 null/undefined가 아님)`
             },
             {
                 title: "모듈 시스템 (import/export)",
                 content: "코드를 여러 파일로 나누고 필요한 것만 가져와서 사용하는 방법입니다. HTML에서 script 태그에 type='module' 속성이 필요합니다.",
                 code: `// math.js
-export const add = (a, b) => a + b;
+^^export^^ const add = (a, b) => a + b;
 
 // app.js
-import { add } from './math.js';
+^^import^^ { add } from './math.js';
 console.log(add(1, 2));`
             }
         ],
@@ -344,7 +344,7 @@ console.log(userName);`
                 title: "Promise와 then/catch",
                 content: "비동기 작업의 성공/실패를 처리하는 객체입니다. 콜백 지옥을 해결해줍니다.",
                 code: `const fetchUser = () => {
-            return new Promise((resolve, reject) => {
+            return new ^^Promise^^((resolve, reject) => {
                 setTimeout(() => resolve("User Data"), 1000);
             });
         };
@@ -356,9 +356,9 @@ console.log(userName);`
             {
                 title: "async / await",
                 content: "Promise를 동기 코드처럼 작성할 수 있게 해주는 문법적 설탕(Syntactic Sugar)입니다. try/catch로 에러를 처리합니다.",
-                code: `async function getUser() {
+                code: `^^async^^ function getUser() {
             try {
-                const data = await fetchUser();
+                const data = ^^await^^ fetchUser();
                 console.log(data);
             } catch (e) {
                 console.log("에러 발생:", e);
@@ -371,7 +371,7 @@ console.log(userName);`
                 code: `const p1 = Promise.resolve(1);
         const p2 = Promise.resolve(2);
 
-        const results = await Promise.all([p1, p2]);
+        const results = await ^^Promise.all^^([p1, p2]);
         console.log(results); // [1, 2]`
             }
         ],
@@ -403,7 +403,7 @@ test();`
             {
                 title: "요소 선택과 스타일 변경",
                 content: "querySelector로 요소를 찾고, style 속성이나 classList를 사용하여 스타일을 변경합니다.",
-                code: `const box = document.querySelector('.box');
+                code: `const box = document.^^querySelector^^('.box');
         box.style.backgroundColor = 'red';
         box.classList.add('active'); // 클래스 추가
         box.classList.remove('hidden'); // 클래스 제거`
@@ -412,7 +412,7 @@ test();`
                 title: "요소 생성과 추가 (createElement)",
                 content: "새로운 HTML 요소를 만들어서 화면에 추가합니다.",
                 code: `const list = document.getElementById('list');
-const newItem = document.createElement('li');
+const newItem = document.^^createElement^^('li');
 newItem.innerText = "새로운 아이템";
 list.appendChild(newItem);`
             },
@@ -420,7 +420,7 @@ list.appendChild(newItem);`
                 title: "이벤트 리스너와 이벤트 객체",
                 content: "클릭, 입력 등의 이벤트를 감지하고, 이벤트 객체(e)를 통해 상세 정보를 얻습니다.",
                 code: `const btn = document.querySelector('button');
-btn.addEventListener('click', (e) => {
+btn.^^addEventListener^^('click', (e) => {
   console.log("클릭된 좌표:", e.clientX, e.clientY);
   e.target.innerText = "클릭됨!";
 });`

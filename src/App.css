@@ -741,3 +741,11 @@ body {
 .hl-number {
   color: #f78c6c;
 }
+
+.hl-highlight {
+  background-color: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 0 2px;
+}

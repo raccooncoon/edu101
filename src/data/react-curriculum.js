@@ -14,7 +14,7 @@ export const curriculum = [
         content: "JSX는 JavaScript 코드 안에서 UI 구조를 HTML과 비슷하게 작성할 수 있게 해주는 문법입니다. 브라우저가 이해하기 전에 Babel과 같은 도구가 일반 JavaScript로 변환합니다.",
         code: `function HelloWorld() {
   return (
-    <div className="container">
+    <div ^^className^^="container">
       <h1>Hello, React!</h1>
       <p>This is JSX.</p>
     </div>
@@ -26,11 +26,11 @@ export const curriculum = [
         content: "반드시 하나의 부모 요소로 감싸야 합니다. HTML class 속성 대신 className을 사용해야 합니다. 불필요한 div를 추가하고 싶지 않다면 <React.Fragment> 또는 단축 문법인 <>...</>를 사용하세요.",
         code: `function App() {
   return (
-    <>
+    ^^<>^^
       <Header />
       <Main />
       <Footer />
-    </>
+    ^^</>^^
   );
 }`
       },
@@ -39,11 +39,11 @@ export const curriculum = [
         content: "중괄호 {}를 사용하여 변수나 표현식을 넣을 수 있습니다. 인라인 스타일은 객체 형태로 작성하며 camelCase를 사용합니다.",
         code: `const name = "React";
 const style = { 
-  color: "blue", 
-  fontSize: "20px" 
+  ^^color^^: "blue", 
+  ^^fontSize^^: "20px" 
 };
 
-const element = <h1 style={style}>Hello, {name}</h1>;`
+const element = <h1 ^^style={style}^^>Hello, {name}</h1>;`
       }
     ],
     challenge: {
@@ -76,22 +76,22 @@ const element = <h1 style={style}>Hello, {name}</h1>;`
       {
         title: "함수형 컴포넌트",
         content: "React 컴포넌트는 데이터를 가진 'props' 객체 인자를 받아 React 요소를 반환하는 단순한 JavaScript 함수입니다. 대문자로 시작해야 합니다.",
-        code: `function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>;
+        code: `function Welcome(^^props^^) {
+  return <h1>Hello, {^^props.name^^}</h1>;
 }`
       },
       {
         title: "Props 구조 분해 할당과 기본값",
         content: "매개변수 부분에서 구조 분해 할당을 사용하면 코드가 깔끔해집니다. 기본값을 설정하여 props가 없을 때를 대비할 수 있습니다.",
-        code: `function Button({ label, color = "blue" }) {
+        code: `function Button({ ^^label^^, ^^color^^ = "blue" }) {
   return <button style={{ color }}>{label}</button>;
 }`
       },
       {
         title: "Children Prop",
         content: "컴포넌트 태그 사이에 넣은 내용은 children이라는 특별한 prop으로 전달됩니다. 레이아웃 컴포넌트를 만들 때 유용합니다.",
-        code: `function Card({ children }) {
-  return <div className="card-box">{children}</div>;
+        code: `function Card({ ^^children^^ }) {
+  return <div className="card-box">{^^children^^}</div>;
 }
 
 // 사용
@@ -132,10 +132,10 @@ const element = <h1 style={style}>Hello, {name}</h1>;`
       {
         title: "useState 훅 이해하기",
         content: "useState는 상태값과 그 상태를 업데이트하는 함수를 반환합니다. 상태가 변경되면 컴포넌트는 다시 렌더링됩니다.",
-        code: `import { useState } from "react";
+        code: `import { ^^useState^^ } from "react";
 
 function Counter() {
-  const [count, setCount] = useState(0); // 초기값 0
+  const [^^count^^, ^^setCount^^] = useState(0); // 초기값 0
   
   return (
     <button onClick={() => setCount(count + 1)}>
@@ -148,7 +148,7 @@ function Counter() {
         title: "함수형 업데이트 (Functional Update)",
         content: "이전 상태값을 기반으로 업데이트할 때는 콜백 함수를 사용하는 것이 안전합니다. 특히 비동기 상황이나 연속된 업데이트에서 중요합니다.",
         code: `// 안전한 방식
-setCount(prevCount => prevCount + 1);
+setCount(^^prevCount => prevCount + 1^^);
 setCount(prevCount => prevCount + 1); // 정확히 2 증가`
       },
       {
@@ -157,7 +157,7 @@ setCount(prevCount => prevCount + 1); // 정확히 2 증가`
         code: `const [user, setUser] = useState({ name: "Kim", age: 20 });
 
 const updateName = () => {
-  setUser({ ...user, name: "Lee" }); // age는 유지됨
+  setUser({ ^^...user^^, name: "Lee" }); // age는 유지됨
 };`
       }
     ],
@@ -196,8 +196,8 @@ const updateName = () => {
         code: `function UserGreeting({ user }) {
   return (
     <div>
-      {user ? <h1>Welcome, {user.name}!</h1> : <button>Login</button>}
-      {user && <p>You have unread messages.</p>}
+      {user ^^?^^ <h1>Welcome, {user.name}!</h1> ^^:^^ <button>Login</button>}
+      {user ^^&&^^ <p>You have unread messages.</p>}
     </div>
   );
 }`
@@ -213,8 +213,8 @@ const updateName = () => {
 function TodoList() {
   return (
     <ul>
-      {todos.map(todo => (
-        <li key={todo.id}>{todo.text}</li>
+      {todos.^^map^^(todo => (
+        <li ^^key={todo.id}^^>{todo.text}</li>
       ))}
     </ul>
   );
@@ -260,9 +260,9 @@ function TodoList() {
       {
         title: "useEffect와 의존성 배열 (Dependency Array)",
         content: "의존성 배열에 있는 값이 변할 때만 Effect가 실행됩니다. 빈 배열([])은 마운트 시 1회만 실행됨을 의미합니다.",
-        code: `useEffect(() => {
+        code: `^^useEffect^^(() => {
   console.log("마운트 될 때 실행");
-}, []);
+}, ^^[]^^);
 
 useEffect(() => {
   console.log("count가 변할 때마다 실행");
@@ -276,7 +276,7 @@ useEffect(() => {
     console.log('Tick');
   }, 1000);
 
-  return () => clearInterval(timer); // 정리 함수
+  return () => clearInterval(timer); // ^^정리 함수^^
 }, []);`
       }
     ],
@@ -316,8 +316,8 @@ useEffect(() => {
   return (
     <input 
       type="text" 
-      value={value} 
-      onChange={(e) => setValue(e.target.value)} 
+      ^^value={value}^^ 
+      ^^onChange={(e) => setValue(e.target.value)}^^ 
     />
   );
 }`
@@ -335,7 +335,7 @@ const onChange = (e) => {
       {
         title: "useRef로 비제어 컴포넌트 접근하기",
         content: "값이 바뀔 때마다 렌더링할 필요가 없거나, DOM에 직접 접근해야 할 때(예: 포커스 주기) useRef를 사용합니다.",
-        code: `const inputRef = useRef();
+        code: `const inputRef = ^^useRef^^();
 
 const focusInput = () => {
   inputRef.current.focus();
@@ -389,16 +389,16 @@ const focusInput = () => {
       {
         title: "CSS Modules",
         content: "CSS 클래스 이름 충돌을 방지하기 위해 파일 단위로 스코프를 제한하는 방식입니다. [name].module.css 파일을 만들어 사용합니다.",
-        code: `import styles from './Button.module.css';
+        code: `import styles from './Button.^^module.css^^';
 
 function Button() {
-  return <button className={styles.error}>Error</button>;
+  return <button className={^^styles.error^^}>Error</button>;
 }`
       },
       {
         title: "CSS-in-JS (Styled Components)",
         content: "JavaScript 파일 안에 CSS를 작성하는 방식입니다. props에 따라 동적으로 스타일을 변경하기 쉽습니다.",
-        code: `const Button = styled.button\`
+        code: `const Button = ^^styled.button^^\`
   background: \${props => props.primary ? "blue" : "white"};
   color: \${props => props.primary ? "white" : "blue"};
 \`;`
@@ -408,18 +408,18 @@ function Button() {
       title: "다크 모드 버튼",
       description: "버튼 하나를 만들고, 클릭 상태(활성/비활성)에 따라 색상이 완전히 바뀌는 스타일링을 적용해보세요.",
       solution: `import styles from './DarkModeBtn.module.css';
-// CSS: .dark { background: black; color: white; } .light { background: white; color: black; }
+        // CSS: .dark { background: black; color: white; } .light { background: white; color: black; }
 
-function DarkModeBtn() {
-  const [isDark, setIsDark] = useState(false);
+        function DarkModeBtn() {
+        const [isDark, setIsDark] = useState(false);
 
-  return (
+        return(
     <button 
-      className={isDark ? styles.dark : styles.light}
-      onClick={() => setIsDark(!isDark)}
+      className = { isDark? styles.dark : styles.light }
+      onClick = {() => setIsDark(!isDark)}
     >
-      {isDark ? "Dark Mode" : "Light Mode"}
-    </button>
+  { isDark? "Dark Mode": "Light Mode" }
+    </button >
   );
 }`
     }
@@ -433,7 +433,7 @@ function DarkModeBtn() {
       {
         title: "기본 라우팅 설정",
         content: "BrowserRouter, Routes, Route 컴포넌트를 사용하여 URL 경로에 따라 다른 컴포넌트를 보여줍니다.",
-        code: `import { BrowserRouter, Routes, Route } from "react-router-dom";
+        code: `import { ^^ BrowserRouter ^^, ^^ Routes ^^, ^^ Route ^^ } from "react-router-dom";
 
 function App() {
   return (
@@ -445,22 +445,22 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}`
+} `
       },
       {
         title: "Link와 useNavigate",
         content: "a 태그 대신 Link 컴포넌트를 사용하여 페이지를 이동하고, useNavigate 훅으로 프로그래밍 방식으로 이동합니다.",
-        code: `import { Link, useNavigate } from "react-router-dom";
+        code: `import { ^^ Link ^^, ^^ useNavigate ^^ } from "react-router-dom";
 
 function Home() {
-  const navigate = useNavigate();
+  const navigate = ^^ useNavigate ^^ ();
   return (
     <>
       <Link to="/about">About으로 이동</Link>
       <button onClick={() => navigate('/about')}>이동</button>
     </>
   );
-}`
+} `
       }
     ],
     challenge: {
@@ -486,11 +486,11 @@ function PostDetail() {
       {
         title: "Context 생성과 Provider",
         content: "createContext로 컨텍스트를 만들고, Provider로 하위 컴포넌트들에게 데이터를 공급합니다.",
-        code: `const ThemeContext = createContext('light');
+        code: `const ThemeContext = ^^createContext^^('light');
 
 function App() {
   return (
-    <ThemeContext.Provider value="dark">
+    <ThemeContext.^^Provider^^ value="dark">
       <Toolbar />
     </ThemeContext.Provider>
   );
@@ -500,7 +500,7 @@ function App() {
         title: "useContext 사용하기",
         content: "하위 컴포넌트에서는 useContext 훅을 사용하여 Provider가 공급한 값을 손쉽게 가져다 쓸 수 있습니다.",
         code: `function ThemedButton() {
-  const theme = useContext(ThemeContext);
+  const theme = ^^useContext^^(ThemeContext);
   return <button className={theme}>I am {theme}</button>;
 }`
       }
@@ -536,14 +536,14 @@ function ThemedBtn() {
       {
         title: "useMemo (값 캐싱)",
         content: "복잡한 계산 결과를 메모리에 저장(캐싱)하여, 의존성 값이 바뀌지 않는 한 재계산을 방지합니다.",
-        code: `const expensiveValue = useMemo(() => {
+        code: `const expensiveValue = ^^useMemo^^(() => {
   return computeExpensiveValue(a, b);
 }, [a, b]);`
       },
       {
         title: "useCallback (함수 캐싱)",
         content: "함수를 메모이제이션하여 자식 컴포넌트에 props로 전달할 때 불필요한 렌더링을 방지합니다.",
-        code: `const handleClick = useCallback(() => {
+        code: `const handleClick = ^^useCallback^^(() => {
   doSomething(a, b);
 }, [a, b]);`
       }
@@ -588,9 +588,9 @@ function Parent() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/users');
+      const response = ^^await^^ fetch('/api/users');
       if (!response.ok) throw new Error('Network response was not ok');
-      const json = await response.json();
+      const json = ^^await^^ response.json();
       setUsers(json);
     } catch (e) {
       setError(e);
@@ -693,7 +693,7 @@ function Parent() {
       {
         title: "Store와 Slice",
         content: "전역 상태 저장소인 Store와, 상태의 일부분과 변경 로직을 정의하는 Slice 개념을 이해합니다.",
-        code: `const counterSlice = createSlice({
+        code: `const counterSlice = ^^createSlice^^({
   name: 'counter',
   initialState: { value: 0 },
   reducers: {
@@ -707,8 +707,8 @@ export default counterSlice.reducer;`
       {
         title: "useSelector와 useDispatch",
         content: "컴포넌트에서 Redux 상태를 읽거나(useSelector), 액션을 발생시켜(useDispatch) 상태를 변경합니다.",
-        code: `const count = useSelector(state => state.counter.value);
-const dispatch = useDispatch();
+        code: `const count = ^^useSelector^^(state => state.counter.value);
+const dispatch = ^^useDispatch^^();
 
 <button onClick={() => dispatch(increment())}>+</button>`
       }
@@ -743,13 +743,13 @@ const dispatch = useDispatch();
       {
         title: "Code Splitting (Lazy Loading)",
         content: "React.lazy와 Suspense를 사용하여 당장 필요하지 않은 컴포넌트는 나중에 불러와 초기 로딩 속도를 높입니다.",
-        code: `const OtherComponent = React.lazy(() => import('./OtherComponent'));
+        code: `const OtherComponent = React.^^lazy^^(() => import('./OtherComponent'));
 
 function MyComponent() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <^^Suspense^^ fallback={<div>Loading...</div>}>
       <OtherComponent />
-    </Suspense>
+    </^^Suspense^^>
   );
 } `
       },
