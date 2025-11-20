@@ -321,18 +321,6 @@ body {
   background: rgba(139, 92, 246, 0.7);
 }
 
-.topic-card pre::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2.5rem;
-  background: linear-gradient(to bottom, rgba(139, 92, 246, 0.1), transparent);
-  border-radius: 0.75rem 0.75rem 0 0;
-  pointer-events: none;
-}
-
 .code-block {
   background: linear-gradient(to right, #1a1e2e 0%, #16213e 100%);
   padding: 1.5rem;
@@ -367,17 +355,7 @@ body {
   background: rgba(139, 92, 246, 0.7);
 }
 
-.code-block::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2.5rem;
-  background: linear-gradient(to bottom, rgba(139, 92, 246, 0.1), transparent);
-  border-radius: 0.75rem 0.75rem 0 0;
-  pointer-events: none;
-}
+
 
 .code-block code,
 .topic-card code {
