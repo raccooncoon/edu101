@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { curriculum as reactCurriculum } from './data/react-curriculum';
-import { jsCurriculum } from './data/js-curriculum';
+import { courses } from './data/courses';
 import './App.css';
 
 function CodeBlock({ code }) {
@@ -20,33 +19,31 @@ function App() {
   });
 
   // 현재 선택된 커리큘럼 데이터 가져오기
-  const currentCurriculum = course === 'react' ? reactCurriculum : (course === 'js' ? jsCurriculum : []);
+  const currentCourseData = courses.find(c => c.id === course);
+  const currentCurriculum = currentCourseData?.data || [];
 
   // URL 해시 기반 라우팅
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash; // #/react, #/js, #/react/day/1
 
-      if (hash.startsWith('#/react')) {
-        setCourse('react');
-        const dayMatch = hash.match(/#\/react\/day\/(\d+)/);
-        if (dayMatch) {
-          setSelectedDay(parseInt(dayMatch[1]));
-        } else {
-          setSelectedDay(null);
+      // Try to match #/courseId or #/courseId/day/dayId
+      const match = hash.match(/^#\/([^/]+)(?:\/day\/(\d+))?/);
+
+      if (match) {
+        const courseId = match[1];
+        const dayId = match[2] ? parseInt(match[2]) : null;
+
+        // Check if it's a valid course
+        if (courses.some(c => c.id === courseId)) {
+          setCourse(courseId);
+          setSelectedDay(dayId);
+          return;
         }
-      } else if (hash.startsWith('#/js')) {
-        setCourse('js');
-        const dayMatch = hash.match(/#\/js\/day\/(\d+)/);
-        if (dayMatch) {
-          setSelectedDay(parseInt(dayMatch[1]));
-        } else {
-          setSelectedDay(null);
-        }
-      } else {
-        setCourse(null);
-        setSelectedDay(null);
       }
+
+      setCourse(null);
+      setSelectedDay(null);
     };
 
     // 초기 로드 시 해시 확인
@@ -136,19 +133,18 @@ function App() {
             </div>
 
             <div className="course-selection">
-              <div className="course-card js-card" onClick={() => navigateToCourse('js')}>
-                <div className="course-icon">💛</div>
-                <h2>JavaScript 101</h2>
-                <p>웹 개발의 기본, 자바스크립트 문법과 핵심 개념을 8일 만에 마스터하세요.</p>
-                <span className="btn-text">시작하기 →</span>
-              </div>
-
-              <div className="course-card react-card" onClick={() => navigateToCourse('react')}>
-                <div className="course-icon">⚛️</div>
-                <h2>React 101</h2>
-                <p>모던 웹 개발의 대세, 리액트의 기초부터 실전 배포까지 15일 완성 코스.</p>
-                <span className="btn-text">시작하기 →</span>
-              </div>
+              {courses.map(c => (
+                <div
+                  key={c.id}
+                  className={`course-card ${c.themeColor}-card`}
+                  onClick={() => navigateToCourse(c.id)}
+                >
+                  <div className="course-icon">{c.icon}</div>
+                  <h2>{c.title}</h2>
+                  <p>{c.description}</p>
+                  <span className="btn-text">시작하기 →</span>
+                </div>
+              ))}
             </div>
           </div>
         </main>
@@ -176,8 +172,8 @@ function App() {
           <div className="container">
             <div className="header-content">
               <div className="logo" onClick={navigateToHome} style={{ cursor: 'pointer' }}>
-                <div className="logo-icon">{course === 'react' ? '⚛️' : '💛'}</div>
-                <span className="gradient-text">{course === 'react' ? 'React 101' : 'JS 101'}</span>
+                <div className="logo-icon">{currentCourseData?.icon}</div>
+                <span className="gradient-text">{currentCourseData?.title}</span>
               </div>
               <div className="nav-buttons">
                 <button onClick={() => navigateToCourse(course)} className="btn btn-outline">
@@ -258,8 +254,8 @@ function App() {
         <div className="container">
           <div className="header-content">
             <div className="logo" onClick={navigateToHome} style={{ cursor: 'pointer' }}>
-              <div className="logo-icon">{course === 'react' ? '⚛️' : '💛'}</div>
-              <span className="gradient-text">{course === 'react' ? 'React 101' : 'JavaScript 101'}</span>
+              <div className="logo-icon">{currentCourseData?.icon}</div>
+              <span className="gradient-text">{currentCourseData?.title}</span>
             </div>
             <button onClick={navigateToHome} className="btn btn-outline btn-home">
               🏠 코스 변경
@@ -272,12 +268,10 @@ function App() {
         <div className="container">
           <div className="hero">
             <h1><span className="gradient-text">
-              {course === 'react' ? 'React 마스터 여정' : 'JavaScript 기초 다지기'}
+              {currentCourseData?.heroTitle}
             </span></h1>
             <p className="hero-desc">
-              {course === 'react'
-                ? '하루 1-2시간, 체계적인 커리큘럼으로 React의 기초부터 실전까지 완벽하게 마스터하세요.'
-                : '프로그래밍의 시작, 자바스크립트의 핵심 개념을 탄탄하게 다져보세요.'}
+              {currentCourseData?.heroDesc}
             </p>
           </div>
 
