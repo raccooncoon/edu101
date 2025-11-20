@@ -2,67 +2,10 @@ import { useState, useEffect } from 'react';
 import { curriculum } from './data/curriculum';
 import './App.css';
 
-// Enhanced syntax highlighting component
 function CodeBlock({ code }) {
-  const [highlighted, setHighlighted] = useState('');
-
-  useEffect(() => {
-    const html = highlightCode(code);
-    setHighlighted(html);
-  }, [code]);
-
-  const highlightCode = (code) => {
-    // Preserve whitespace and line breaks
-    let result = code
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\n/g, '<<<NEWLINE>>>')
-      .replace(/ /g, '&nbsp;');
-
-    // Keywords
-    result = result.replace(/\b(import|from|export|default|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|new|class|extends|super|this)\b/g, '<span class="hl-keyword">$1</span>');
-
-    // React hooks
-    result = result.replace(/\b(useState|useEffect|useContext|useReducer|useCallback|useMemo|useRef)\b/g, '<span class="hl-hook">$1</span>');
-
-    // Strings (handle escaped quotes)
-    result = result.replace(/(['"`])((?:\\.|(?!\1)[^\\])*)\1/g, '<span class="hl-string">$1$2$1</span>');
-
-    // Template literals
-    result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
-
-    // Comments
-    result = result.replace(/\/\/(.*?)<<<NEWLINE>>>/g, '<span class="hl-comment">//$1</span><<<NEWLINE>>>');
-    result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
-
-    // Numbers
-    result = result.replace(/\b(\d+)\b/g, '<span class="hl-number">$1</span>');
-
-    // Function calls
-    result = result.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)&nbsp;*(?=\()/g, '<span class="hl-function">$1</span>');
-
-    // JSX tags and components
-    result = result.replace(/&lt;(\/?[A-Z][a-zA-Z0-9]*)/g, '&lt;<span class="hl-component">$1</span>');
-    result = result.replace(/&lt;(\/?[a-z][a-zA-Z0-9]*)/g, '&lt;<span class="hl-tag">$1</span>');
-
-    // JSX attributes
-    result = result.replace(/\b([a-zA-Z-]+)(?==)/g, '<span class="hl-attr">$1</span>');
-
-    // Brackets and braces
-    result = result.replace(/([{}[\]()])/g, '<span class="hl-punctuation">$1</span>');
-
-    // Arrow functions
-    result = result.replace(/=&gt;/g, '<span class="hl-operator">=&gt;</span>');
-
-    // Restore newlines
-    result = result.replace(/<<<NEWLINE>>>/g, '\n');
-
-    return result;
-  };
-
   return (
     <pre className="code-block">
-      <code dangerouslySetInnerHTML={{ __html: highlighted }} />
+      <code>{code}</code>
     </pre>
   );
 }
