@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { curriculum } from './data/curriculum';
+import { curriculum as reactCurriculum } from './data/react-curriculum';
+import { jsCurriculum } from './data/js-curriculum';
 import './App.css';
 
 function CodeBlock({ code }) {
@@ -11,22 +12,39 @@ function CodeBlock({ code }) {
 }
 
 function App() {
+  const [course, setCourse] = useState(null); // 'react' | 'js' | null
   const [selectedDay, setSelectedDay] = useState(null);
   const [completedDays, setCompletedDays] = useState(() => {
-    const saved = localStorage.getItem('completedDays');
-    return saved ? JSON.parse(saved) : [];
+    const saved = localStorage.getItem('completedDays_v2');
+    return saved ? JSON.parse(saved) : { react: [], js: [] };
   });
+
+  // 현재 선택된 커리큘럼 데이터 가져오기
+  const currentCurriculum = course === 'react' ? reactCurriculum : (course === 'js' ? jsCurriculum : []);
 
   // URL 해시 기반 라우팅
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#day-')) {
-        const dayNum = parseInt(hash.replace('#day-', ''));
-        if (!isNaN(dayNum) && dayNum >= 1 && dayNum <= curriculum.length) {
-          setSelectedDay(dayNum);
+      const hash = window.location.hash; // #/react, #/js, #/react/day/1
+
+      if (hash.startsWith('#/react')) {
+        setCourse('react');
+        const dayMatch = hash.match(/#\/react\/day\/(\d+)/);
+        if (dayMatch) {
+          setSelectedDay(parseInt(dayMatch[1]));
+        } else {
+          setSelectedDay(null);
+        }
+      } else if (hash.startsWith('#/js')) {
+        setCourse('js');
+        const dayMatch = hash.match(/#\/js\/day\/(\d+)/);
+        if (dayMatch) {
+          setSelectedDay(parseInt(dayMatch[1]));
+        } else {
+          setSelectedDay(null);
         }
       } else {
+        setCourse(null);
         setSelectedDay(null);
       }
     };
@@ -39,50 +57,118 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // 백스페이스 키로 메인으로 이동
+  // 백스페이스 키로 뒤로 가기
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // 백스페이스 키이고, input/textarea에 포커스가 없을 때만
-      if (e.key === 'Backspace' && selectedDay !== null) {
+      if (e.key === 'Backspace') {
         const target = e.target;
         const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
 
         if (!isInput) {
-          e.preventDefault();
-          navigateToHome();
+          if (selectedDay !== null) {
+            e.preventDefault();
+            navigateToCourse(course);
+          } else if (course !== null) {
+            e.preventDefault();
+            navigateToHome();
+          }
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedDay]);
-
-  const navigateToDay = (dayId) => {
-    window.location.hash = `day-${dayId}`;
-  };
+  }, [course, selectedDay]);
 
   const navigateToHome = () => {
     window.location.hash = '';
   };
 
-  const handleComplete = (dayId) => {
-    let newCompleted;
-    if (completedDays.includes(dayId)) {
-      // 이미 완료된 경우 - 완료 해제
-      newCompleted = completedDays.filter(id => id !== dayId);
-    } else {
-      // 완료되지 않은 경우 - 완료 추가
-      newCompleted = [...completedDays, dayId];
-    }
-    setCompletedDays(newCompleted);
-    localStorage.setItem('completedDays', JSON.stringify(newCompleted));
+  const navigateToCourse = (courseId) => {
+    window.location.hash = `#/${courseId}`;
   };
 
+  const navigateToDay = (dayId) => {
+    window.location.hash = `#/${course}/day/${dayId}`;
+  };
+
+  const handleComplete = (dayId) => {
+    if (!course) return;
+
+    const currentCompleted = completedDays[course];
+    let newCourseCompleted;
+
+    if (currentCompleted.includes(dayId)) {
+      newCourseCompleted = currentCompleted.filter(id => id !== dayId);
+    } else {
+      newCourseCompleted = [...currentCompleted, dayId];
+    }
+
+    const newCompletedDays = {
+      ...completedDays,
+      [course]: newCourseCompleted
+    };
+
+    setCompletedDays(newCompletedDays);
+    localStorage.setItem('completedDays_v2', JSON.stringify(newCompletedDays));
+  };
+
+  // 1. 코스 선택 화면 (Home)
+  if (!course) {
+    return (
+      <div className="app">
+        <header className="header">
+          <div className="container">
+            <div className="logo">
+              <div className="logo-icon">🚀</div>
+              <span className="gradient-text">DevMastery</span>
+            </div>
+          </div>
+        </header>
+
+        <main className="main-content">
+          <div className="container">
+            <div className="hero">
+              <h1><span className="gradient-text">학습할 과정을 선택하세요</span></h1>
+              <p className="hero-desc">
+                기초부터 심화까지, 당신의 개발 여정을 함께합니다.
+              </p>
+            </div>
+
+            <div className="course-selection">
+              <div className="course-card js-card" onClick={() => navigateToCourse('js')}>
+                <div className="course-icon">💛</div>
+                <h2>JavaScript 101</h2>
+                <p>웹 개발의 기본, 자바스크립트 문법과 핵심 개념을 8일 만에 마스터하세요.</p>
+                <span className="btn-text">시작하기 →</span>
+              </div>
+
+              <div className="course-card react-card" onClick={() => navigateToCourse('react')}>
+                <div className="course-icon">⚛️</div>
+                <h2>React 101</h2>
+                <p>모던 웹 개발의 대세, 리액트의 기초부터 실전 배포까지 15일 완성 코스.</p>
+                <span className="btn-text">시작하기 →</span>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer className="footer">
+          <div className="container">
+            <p>Start your journey today 🚀</p>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
+  // 2. 상세 학습 화면 (Lesson Detail)
   if (selectedDay) {
-    const lesson = curriculum.find(d => d.day === selectedDay);
-    const nextLesson = curriculum.find(d => d.day === selectedDay + 1);
-    const isCompleted = completedDays.includes(selectedDay);
+    const lesson = currentCurriculum.find(d => d.day === selectedDay);
+    const nextLesson = currentCurriculum.find(d => d.day === selectedDay + 1);
+    const isCompleted = completedDays[course].includes(selectedDay);
+
+    if (!lesson) return <div>Loading...</div>;
 
     return (
       <div className="app">
@@ -90,20 +176,25 @@ function App() {
           <div className="container">
             <div className="header-content">
               <div className="logo" onClick={navigateToHome} style={{ cursor: 'pointer' }}>
-                <div className="logo-icon">📚</div>
-                <span className="gradient-text">React 101</span>
+                <div className="logo-icon">{course === 'react' ? '⚛️' : '💛'}</div>
+                <span className="gradient-text">{course === 'react' ? 'React 101' : 'JS 101'}</span>
               </div>
-              <button onClick={navigateToHome} className="btn btn-outline btn-home">
-                🏠 메인으로
-              </button>
+              <div className="nav-buttons">
+                <button onClick={() => navigateToCourse(course)} className="btn btn-outline">
+                  목록으로
+                </button>
+                <button onClick={navigateToHome} className="btn btn-outline btn-home">
+                  🏠 홈
+                </button>
+              </div>
             </div>
           </div>
         </header>
 
         <main className="main-content">
           <div className="container lesson-container">
-            <button onClick={navigateToHome} className="back-btn">
-              ← 돌아가기
+            <button onClick={() => navigateToCourse(course)} className="back-btn">
+              ← 목록으로 돌아가기
             </button>
 
             <div className="lesson-header">
@@ -160,13 +251,19 @@ function App() {
     );
   }
 
+  // 3. 커리큘럼 목록 화면 (Course List)
   return (
     <div className="app">
       <header className="header">
         <div className="container">
-          <div className="logo">
-            <div className="logo-icon">📚</div>
-            <span className="gradient-text">React 101</span>
+          <div className="header-content">
+            <div className="logo" onClick={navigateToHome} style={{ cursor: 'pointer' }}>
+              <div className="logo-icon">{course === 'react' ? '⚛️' : '💛'}</div>
+              <span className="gradient-text">{course === 'react' ? 'React 101' : 'JavaScript 101'}</span>
+            </div>
+            <button onClick={navigateToHome} className="btn btn-outline btn-home">
+              🏠 코스 변경
+            </button>
           </div>
         </div>
       </header>
@@ -174,15 +271,19 @@ function App() {
       <main className="main-content">
         <div className="container">
           <div className="hero">
-            <h1><span className="gradient-text">React 마스터 여정</span></h1>
+            <h1><span className="gradient-text">
+              {course === 'react' ? 'React 마스터 여정' : 'JavaScript 기초 다지기'}
+            </span></h1>
             <p className="hero-desc">
-              하루 1-2시간, 체계적인 커리큘럼으로 React의 기초부터 실전까지 완벽하게 마스터하세요.
+              {course === 'react'
+                ? '하루 1-2시간, 체계적인 커리큘럼으로 React의 기초부터 실전까지 완벽하게 마스터하세요.'
+                : '프로그래밍의 시작, 자바스크립트의 핵심 개념을 탄탄하게 다져보세요.'}
             </p>
           </div>
 
           <div className="curriculum-grid">
-            {curriculum.map((day) => {
-              const isCompleted = completedDays.includes(day.day);
+            {currentCurriculum.map((day) => {
+              const isCompleted = completedDays[course].includes(day.day);
               return (
                 <div
                   key={day.day}
@@ -211,7 +312,7 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>Designed for your React Journey 🚀</p>
+          <p>Designed for your Coding Journey 🚀</p>
         </div>
       </footer>
     </div>
