@@ -15,7 +15,19 @@ function App() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [completedDays, setCompletedDays] = useState(() => {
     const saved = localStorage.getItem('completedDays_v2');
-    return saved ? JSON.parse(saved) : { react: [], js: [] };
+    if (!saved) return { react: {}, js: {} };
+
+    const parsed = JSON.parse(saved);
+    // Migration: Array -> Object check
+    // If the saved data is in the old format (arrays), migrate it.
+    if (Array.isArray(parsed.react)) {
+      const now = new Date().toLocaleString();
+      const migrated = { react: {}, js: {} };
+      parsed.react.forEach(id => migrated.react[id] = now);
+      parsed.js.forEach(id => migrated.js[id] = now);
+      return migrated;
+    }
+    return parsed;
   });
   const [showSolution, setShowSolution] = useState(false);
 
@@ -98,13 +110,20 @@ function App() {
   const handleComplete = (dayId) => {
     if (!course) return;
 
-    const currentCompleted = completedDays[course];
+    const currentCourseCompleted = completedDays[course] || {};
+    const isAlreadyCompleted = !!currentCourseCompleted[dayId];
+
     let newCourseCompleted;
 
-    if (currentCompleted.includes(dayId)) {
-      newCourseCompleted = currentCompleted.filter(id => id !== dayId);
+    if (isAlreadyCompleted) {
+      newCourseCompleted = { ...currentCourseCompleted };
+      delete newCourseCompleted[dayId];
     } else {
-      newCourseCompleted = [...currentCompleted, dayId];
+      const now = new Date().toLocaleString();
+      newCourseCompleted = {
+        ...currentCourseCompleted,
+        [dayId]: now
+      };
     }
 
     const newCompletedDays = {
@@ -168,7 +187,8 @@ function App() {
   if (selectedDay) {
     const lesson = currentCurriculum.find(d => d.day === selectedDay);
     const nextLesson = currentCurriculum.find(d => d.day === selectedDay + 1);
-    const isCompleted = completedDays[course].includes(selectedDay);
+    const completedDate = completedDays[course]?.[selectedDay];
+    const isCompleted = !!completedDate;
 
     if (!lesson) return <div>Loading...</div>;
 
@@ -254,7 +274,7 @@ function App() {
                 onClick={() => handleComplete(selectedDay)}
                 className={`btn ${isCompleted ? 'btn-completed' : 'btn-outline'}`}
               >
-                {isCompleted ? '✓ 완료됨' : '완료 표시하기'}
+                {isCompleted ? `✓ 완료됨 (${completedDate})` : '완료 표시하기'}
               </button>
 
               {nextLesson && (
@@ -299,7 +319,8 @@ function App() {
 
           <div className="curriculum-grid">
             {currentCurriculum.map((day) => {
-              const isCompleted = completedDays[course].includes(day.day);
+              const completedDate = completedDays[course]?.[day.day];
+              const isCompleted = !!completedDate;
               return (
                 <div
                   key={day.day}
@@ -315,6 +336,7 @@ function App() {
 
                   <h3>{day.title}</h3>
                   <p>{day.description}</p>
+                  {isCompleted && <p style={{ fontSize: '0.8rem', color: '#4caf50', marginTop: '5px' }}>{completedDate} 완료</p>}
 
                   <div className="card-footer">
                     학습하기 →
