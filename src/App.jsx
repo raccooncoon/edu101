@@ -191,11 +191,16 @@ function App() {
   });
 
   const handleComplete = (dayId) => {
-    if (!completedDays.includes(dayId)) {
-      const newCompleted = [...completedDays, dayId];
-      setCompletedDays(newCompleted);
-      localStorage.setItem('completedDays', JSON.stringify(newCompleted));
+    let newCompleted;
+    if (completedDays.includes(dayId)) {
+      // 이미 완료된 경우 - 완료 해제
+      newCompleted = completedDays.filter(id => id !== dayId);
+    } else {
+      // 완료되지 않은 경우 - 완료 추가
+      newCompleted = [...completedDays, dayId];
     }
+    setCompletedDays(newCompleted);
+    localStorage.setItem('completedDays', JSON.stringify(newCompleted));
   };
 
   if (selectedDay) {
