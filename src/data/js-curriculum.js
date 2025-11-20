@@ -45,7 +45,12 @@ console.log(\`Hello, \${name} \${year}\`);`
         ],
         challenge: {
             title: "나만의 명함 만들기",
-            description: "이름, 직업, 나이를 변수에 저장하고, 템플릿 리터럴을 사용하여 '제 이름은 OOO이고, 직업은 OOO입니다.' 형식으로 출력해보세요."
+            description: "이름, 직업, 나이를 변수에 저장하고, 템플릿 리터럴을 사용하여 '제 이름은 OOO이고, 직업은 OOO입니다.' 형식으로 출력해보세요.",
+            solution: `const name = "김철수";
+const job = "프론트엔드 개발자";
+const age = 25;
+
+console.log(\`제 이름은 \${name}이고, 직업은 \${job}입니다.\`);`
         }
     },
     {
@@ -58,9 +63,9 @@ console.log(\`Hello, \${name} \${year}\`);`
                 title: "산술 및 비교 연산자",
                 content: "기본적인 사칙연산과 값의 크기를 비교하는 연산자입니다. ===는 값과 타입이 모두 같은지 비교합니다.",
                 code: `console.log(10 % 3);      // 1 (나머지)
-console.log(2 ** 3);      // 8 (거듭제곱)
-console.log(10 == "10");  // true (값만 비교)
-console.log(10 === "10"); // false (타입까지 비교 - 권장)`
+        console.log(2 ** 3);      // 8 (거듭제곱)
+        console.log(10 == "10");  // true (값만 비교)
+        console.log(10 === "10"); // false (타입까지 비교 - 권장)`
             },
             {
                 title: "논리 연산자와 Truthy/Falsy",
@@ -96,7 +101,22 @@ console.log(status);`
         ],
         challenge: {
             title: "학점 계산기",
-            description: "점수(0~100)가 주어졌을 때, 90점 이상 A, 80점 이상 B, 그 외 C를 출력하는 코드를 삼항 연산자나 if문을 사용하여 작성하세요."
+            description: "점수(0~100)가 주어졌을 때, 90점 이상 A, 80점 이상 B, 그 외 C를 출력하는 코드를 삼항 연산자나 if문을 사용하여 작성하세요.",
+            solution: `const score = 85;
+let grade;
+
+if (score >= 90) {
+  grade = "A";
+} else if (score >= 80) {
+  grade = "B";
+} else {
+  grade = "C";
+}
+
+console.log(grade);
+
+// 삼항 연산자 버전
+// const grade = score >= 90 ? "A" : (score >= 80 ? "B" : "C");`
         }
     },
     {
@@ -109,9 +129,9 @@ console.log(status);`
                 title: "for 반복문과 break/continue",
                 content: "가장 기본적인 반복문입니다. break로 반복을 중단하거나 continue로 다음 반복으로 건너뛸 수 있습니다.",
                 code: `for (let i = 1; i <= 5; i++) {
-  if (i === 3) continue; // 3은 건너뜀
-  console.log(i);        // 1, 2, 4, 5
-}`
+    if (i === 3) continue; // 3은 건너뜀
+    console.log(i);        // 1, 2, 4, 5
+} `
             },
             {
                 title: "for...of 와 for...in",
@@ -119,13 +139,13 @@ console.log(status);`
                 code: `const fruits = ["Apple", "Banana"];
 // 배열 값 순회
 for (const fruit of fruits) {
-  console.log(fruit);
+    console.log(fruit);
 }
 
 const user = { name: "Kim", age: 30 };
 // 객체 키 순회
 for (const key in user) {
-  console.log(\`\${key}: \${user[key]}\`);
+    console.log(\`\${key}: \${user[key]}\`);
 }`
             },
             {
@@ -140,7 +160,16 @@ while (count < 3) {
         ],
         challenge: {
             title: "짝수만 더하기",
-            description: "1부터 10까지의 숫자 중 짝수만 골라서 모두 더한 값을 출력하는 코드를 작성하세요."
+            description: "1부터 10까지의 숫자 중 짝수만 골라서 모두 더한 값을 출력하는 코드를 작성하세요.",
+            solution: `let sum = 0;
+
+for (let i = 1; i <= 10; i++) {
+  if (i % 2 === 0) {
+    sum += i;
+  }
+}
+
+console.log("짝수의 합:", sum);`
         }
     },
     {
@@ -153,19 +182,19 @@ while (count < 3) {
                 title: "함수 선언식 vs 표현식 vs 화살표 함수",
                 content: "함수를 만드는 다양한 방법과 그 차이를 이해합니다. 화살표 함수는 this 바인딩 방식이 다릅니다.",
                 code: `// 선언식
-function add(a, b) { return a + b; }
+    function add(a, b) { return a + b; }
 
-// 표현식
-const sub = function(a, b) { return a - b; };
+    // 표현식
+    const sub = function (a, b) { return a - b; };
 
-// 화살표 함수 (return 생략 가능)
-const mul = (a, b) => a * b;`
+    // 화살표 함수 (return 생략 가능)
+    const mul = (a, b) => a * b; `
             },
             {
                 title: "매개변수 기본값과 Rest 파라미터",
                 content: "매개변수가 전달되지 않았을 때의 기본값을 설정하거나, 개수가 정해지지 않은 인자를 배열로 받을 수 있습니다.",
                 code: `function greet(name = "Guest") {
-  console.log(\`Hello, \${name}\`);
+        console.log(\`Hello, \${name}\`);
 }
 
 function sum(...numbers) {
@@ -187,7 +216,21 @@ function test() {
         ],
         challenge: {
             title: "최대값 찾기 함수",
-            description: "숫자들을 인자로 몇 개든 받아서 그 중 가장 큰 수를 반환하는 max(...numbers) 함수를 구현해보세요."
+            description: "숫자들을 인자로 몇 개든 받아서 그 중 가장 큰 수를 반환하는 max(...numbers) 함수를 구현해보세요.",
+            solution: `function max(...numbers) {
+  let maxNum = numbers[0];
+  for (const num of numbers) {
+    if (num > maxNum) {
+      maxNum = num;
+    }
+  }
+  return maxNum;
+  
+  // 더 간단한 방법:
+  // return Math.max(...numbers);
+}
+
+console.log(max(1, 5, 3, 9, 2)); // 9`
         }
     },
     {
@@ -201,14 +244,14 @@ function test() {
                 content: "데이터를 변환하거나 필터링할 때 필수적인 메서드들입니다. 원본 배열을 변경하지 않고 새로운 배열을 반환합니다.",
                 code: `const nums = [1, 2, 3, 4, 5];
 
-// 제곱하기
-const squared = nums.map(n => n * n); // [1, 4, 9, 16, 25]
+        // 제곱하기
+        const squared = nums.map(n => n * n); // [1, 4, 9, 16, 25]
 
-// 짝수만 필터링
-const evens = nums.filter(n => n % 2 === 0); // [2, 4]
+        // 짝수만 필터링
+        const evens = nums.filter(n => n % 2 === 0); // [2, 4]
 
-// 합계 구하기
-const sum = nums.reduce((acc, cur) => acc + cur, 0); // 15`
+        // 합계 구하기
+        const sum = nums.reduce((acc, cur) => acc + cur, 0); // 15`
             },
             {
                 title: "객체 조작 (Object.keys, values, entries)",
@@ -233,7 +276,18 @@ const updatedUser = { ...user, active: true }; // 객체 복사 및 추가`
         ],
         challenge: {
             title: "쇼핑 카트 총액 계산",
-            description: "상품 객체({ name, price, qty })들이 담긴 배열에서 reduce를 사용하여 총 주문 금액을 계산하세요."
+            description: "상품 객체({ name, price, qty })들이 담긴 배열에서 reduce를 사용하여 총 주문 금액을 계산하세요.",
+            solution: `const cart = [
+  { name: "사과", price: 1000, qty: 2 },
+  { name: "바나나", price: 2000, qty: 1 },
+  { name: "우유", price: 1500, qty: 3 }
+];
+
+const total = cart.reduce((acc, item) => {
+  return acc + (item.price * item.qty);
+}, 0);
+
+console.log("총액:", total); // 8500`
         }
     },
     {
@@ -246,8 +300,8 @@ const updatedUser = { ...user, active: true }; // 객체 복사 및 추가`
                 title: "옵셔널 체이닝 (?.)",
                 content: "객체의 속성이 존재하는지 확인하지 않고도 안전하게 접근할 수 있습니다. 없으면 undefined를 반환합니다.",
                 code: `const user = {};
-// console.log(user.address.street); // 에러 발생!
-console.log(user.address?.street); // undefined (에러 없음)`
+        // console.log(user.address.street); // 에러 발생!
+        console.log(user.address?.street); // undefined (에러 없음)`
             },
             {
                 title: "Nullish 병합 연산자 (??)",
@@ -269,7 +323,15 @@ console.log(add(1, 2));`
         ],
         challenge: {
             title: "안전한 데이터 접근",
-            description: "중첩된 객체에서 옵셔널 체이닝과 Nullish 병합 연산자를 사용하여, 데이터가 없을 때 '정보 없음'을 출력하는 코드를 작성하세요."
+            description: "중첩된 객체에서 옵셔널 체이닝과 Nullish 병합 연산자를 사용하여, 데이터가 없을 때 '정보 없음'을 출력하는 코드를 작성하세요.",
+            solution: `const user = {
+  profile: {
+    // name: "Alice" // 주석 처리하여 테스트
+  }
+};
+
+const userName = user.profile?.name ?? "정보 없음";
+console.log(userName);`
         }
     },
     {
@@ -282,40 +344,54 @@ console.log(add(1, 2));`
                 title: "Promise와 then/catch",
                 content: "비동기 작업의 성공/실패를 처리하는 객체입니다. 콜백 지옥을 해결해줍니다.",
                 code: `const fetchUser = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve("User Data"), 1000);
-  });
-};
+            return new Promise((resolve, reject) => {
+                setTimeout(() => resolve("User Data"), 1000);
+            });
+        };
 
-fetchUser()
-  .then(data => console.log(data))
-  .catch(err => console.error(err));`
+        fetchUser()
+            .then(data => console.log(data))
+            .catch(err => console.error(err)); `
             },
             {
                 title: "async / await",
                 content: "Promise를 동기 코드처럼 작성할 수 있게 해주는 문법적 설탕(Syntactic Sugar)입니다. try/catch로 에러를 처리합니다.",
                 code: `async function getUser() {
-  try {
-    const data = await fetchUser();
-    console.log(data);
-  } catch (e) {
-    console.log("에러 발생:", e);
-  }
-}`
+            try {
+                const data = await fetchUser();
+                console.log(data);
+            } catch (e) {
+                console.log("에러 발생:", e);
+            }
+        } `
             },
             {
                 title: "Promise.all",
                 content: "여러 비동기 작업을 병렬로 동시에 처리하고, 모두 완료될 때까지 기다립니다.",
                 code: `const p1 = Promise.resolve(1);
-const p2 = Promise.resolve(2);
+        const p2 = Promise.resolve(2);
 
-const results = await Promise.all([p1, p2]);
-console.log(results); // [1, 2]`
+        const results = await Promise.all([p1, p2]);
+        console.log(results); // [1, 2]`
             }
         ],
         challenge: {
             title: "순차적 vs 병렬 실행",
-            description: "두 개의 1초 걸리는 비동기 함수를 만들고, await로 순차 실행했을 때와 Promise.all로 병렬 실행했을 때의 시간 차이를 확인해보세요."
+            description: "두 개의 1초 걸리는 비동기 함수를 만들고, await로 순차 실행했을 때와 Promise.all로 병렬 실행했을 때의 시간 차이를 확인해보세요.",
+            solution: `const wait1s = () => new Promise(res => setTimeout(res, 1000));
+
+async function test() {
+  console.time("Sequential");
+  await wait1s();
+  await wait1s();
+  console.timeEnd("Sequential"); // 약 2초
+
+  console.time("Parallel");
+  await Promise.all([wait1s(), wait1s()]);
+  console.timeEnd("Parallel"); // 약 1초
+}
+
+test();`
         }
     },
     {
@@ -328,9 +404,9 @@ console.log(results); // [1, 2]`
                 title: "요소 선택과 스타일 변경",
                 content: "querySelector로 요소를 찾고, style 속성이나 classList를 사용하여 스타일을 변경합니다.",
                 code: `const box = document.querySelector('.box');
-box.style.backgroundColor = 'red';
-box.classList.add('active'); // 클래스 추가
-box.classList.remove('hidden'); // 클래스 제거`
+        box.style.backgroundColor = 'red';
+        box.classList.add('active'); // 클래스 추가
+        box.classList.remove('hidden'); // 클래스 제거`
             },
             {
                 title: "요소 생성과 추가 (createElement)",
@@ -352,7 +428,22 @@ btn.addEventListener('click', (e) => {
         ],
         challenge: {
             title: "할 일 목록(Todo) 만들기",
-            description: "input에 내용을 입력하고 버튼을 누르면, 아래 리스트에 새로운 항목이 추가되는 기능을 구현해보세요."
+            description: "input에 내용을 입력하고 버튼을 누르면, 아래 리스트에 새로운 항목이 추가되는 기능을 구현해보세요.",
+            solution: `// HTML: <input id="input" /> <button id="btn">추가</button> <ul id="list"></ul>
+
+const input = document.getElementById('input');
+const btn = document.getElementById('btn');
+const list = document.getElementById('list');
+
+btn.addEventListener('click', () => {
+  if (input.value === '') return;
+  
+  const li = document.createElement('li');
+  li.innerText = input.value;
+  list.appendChild(li);
+  
+  input.value = ''; // 입력창 초기화
+});`
         }
     }
 ];

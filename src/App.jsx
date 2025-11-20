@@ -17,6 +17,7 @@ function App() {
     const saved = localStorage.getItem('completedDays_v2');
     return saved ? JSON.parse(saved) : { react: [], js: [] };
   });
+  const [showSolution, setShowSolution] = useState(false);
 
   // 현재 선택된 커리큘럼 데이터 가져오기
   const currentCourseData = courses.find(c => c.id === course);
@@ -53,6 +54,11 @@ function App() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  // 날짜 변경 시 정답 숨기기 초기화
+  useEffect(() => {
+    setShowSolution(false);
+  }, [selectedDay, course]);
 
   // 백스페이스 키로 뒤로 가기
   useEffect(() => {
@@ -217,13 +223,29 @@ function App() {
 
             <section className="challenge-card">
               <div className="challenge-icon">💡</div>
-              <div>
+              <div style={{ width: '100%' }}>
                 <h2>오늘의 도전 과제</h2>
                 <h3>{lesson.challenge.title}</h3>
                 <p>{lesson.challenge.description}</p>
                 <div className="hint-box">
                   💡 힌트: 이 페이지의 코드를 참고하여 직접 실습해보세요!
                 </div>
+
+                <div style={{ marginTop: '15px' }}>
+                  <button
+                    onClick={() => setShowSolution(!showSolution)}
+                    className="btn btn-outline"
+                    style={{ padding: '5px 10px', fontSize: '0.9rem' }}
+                  >
+                    {showSolution ? '🙈 정답 숨기기' : '👀 정답 보기'}
+                  </button>
+                </div>
+
+                {showSolution && lesson.challenge.solution && (
+                  <div style={{ marginTop: '15px' }}>
+                    <CodeBlock code={lesson.challenge.solution} />
+                  </div>
+                )}
               </div>
             </section>
 

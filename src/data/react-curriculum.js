@@ -48,7 +48,23 @@ const element = <h1 style={style}>Hello, {name}</h1>;`
     ],
     challenge: {
       title: "자기소개 카드 만들기",
-      description: "JSX를 사용하여 자신의 이름, 목표, 좋아하는 기술 스택이 담긴 간단한 프로필 카드를 화면에 출력해보세요. 스타일 객체를 사용하여 꾸며보세요."
+      description: "JSX를 사용하여 자신의 이름, 목표, 좋아하는 기술 스택이 담긴 간단한 프로필 카드를 화면에 출력해보세요. 스타일 객체를 사용하여 꾸며보세요.",
+      solution: `function ProfileCard() {
+  const myStyle = {
+    backgroundColor: "#f0f0f0",
+    padding: "20px",
+    borderRadius: "10px",
+    color: "#333"
+  };
+
+  return (
+    <div style={myStyle}>
+      <h2>김철수</h2>
+      <p>목표: 풀스택 개발자</p>
+      <p>좋아하는 기술: React, Node.js</p>
+    </div>
+  );
+}`
     }
   },
   {
@@ -87,7 +103,24 @@ const element = <h1 style={style}>Hello, {name}</h1>;`
     ],
     challenge: {
       title: "재사용 가능한 버튼 컴포넌트",
-      description: "text와 color를 props로 받아서 스타일이 적용된 버튼을 렌더링하는 Button 컴포넌트를 만들고, 여러 번 재사용해보세요."
+      description: "text와 color를 props로 받아서 스타일이 적용된 버튼을 렌더링하는 Button 컴포넌트를 만들고, 여러 번 재사용해보세요.",
+      solution: `function Button({ text, color = "blue" }) {
+  const style = {
+    backgroundColor: color,
+    color: "white",
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    margin: "5px"
+  };
+
+  return <button style={style}>{text}</button>;
+}
+
+// 사용 예시
+// <Button text="확인" color="green" />
+// <Button text="취소" color="red" />`
     }
   },
   {
@@ -130,7 +163,25 @@ const updateName = () => {
     ],
     challenge: {
       title: "좋아요 버튼 만들기",
-      description: "버튼을 클릭하면 '좋아요' 숫자가 올라가고, 버튼 색상이 변경되는 컴포넌트를 만들어보세요."
+      description: "버튼을 클릭하면 '좋아요' 숫자가 올라가고, 버튼 색상이 변경되는 컴포넌트를 만들어보세요.",
+      solution: `function LikeButton() {
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleClick = () => {
+    setLikes(prev => prev + 1);
+    setIsLiked(true);
+  };
+
+  return (
+    <button 
+      onClick={handleClick}
+      style={{ backgroundColor: isLiked ? "pink" : "grey" }}
+    >
+      좋아요 {likes}
+    </button>
+  );
+}`
     }
   },
   {
@@ -172,7 +223,32 @@ function TodoList() {
     ],
     challenge: {
       title: "필터링 가능한 리스트",
-      description: "사용자 목록 배열을 만들고, 버튼을 누르면 '관리자'인 사용자만 화면에 필터링해서 보여주는 기능을 구현해보세요."
+      description: "사용자 목록 배열을 만들고, 버튼을 누르면 '관리자'인 사용자만 화면에 필터링해서 보여주는 기능을 구현해보세요.",
+      solution: `function UserList() {
+  const [users] = useState([
+    { id: 1, name: "Kim", role: "Admin" },
+    { id: 2, name: "Lee", role: "User" },
+    { id: 3, name: "Park", role: "Admin" }
+  ]);
+  const [filterAdmin, setFilterAdmin] = useState(false);
+
+  const filteredUsers = filterAdmin 
+    ? users.filter(u => u.role === "Admin") 
+    : users;
+
+  return (
+    <div>
+      <button onClick={() => setFilterAdmin(!filterAdmin)}>
+        {filterAdmin ? "모두 보기" : "관리자만 보기"}
+      </button>
+      <ul>
+        {filteredUsers.map(user => (
+          <li key={user.id}>{user.name} ({user.role})</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`
     }
   },
   {
@@ -206,7 +282,23 @@ useEffect(() => {
     ],
     challenge: {
       title: "윈도우 리사이즈 감지기",
-      description: "useEffect를 사용하여 브라우저 창의 크기가 바뀔 때마다 현재 가로 폭을 화면에 표시하는 컴포넌트를 만드세요. (이벤트 리스너 제거 필수!)"
+      description: "useEffect를 사용하여 브라우저 창의 크기가 바뀔 때마다 현재 가로 폭을 화면에 표시하는 컴포넌트를 만드세요. (이벤트 리스너 제거 필수!)",
+      solution: `function WindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return <h1>현재 창 너비: {width}px</h1>;
+}`
     }
   },
   {
@@ -252,7 +344,40 @@ const focusInput = () => {
     ],
     challenge: {
       title: "로그인 폼 만들기",
-      description: "아이디와 비밀번호를 입력받고, 비밀번호가 8자 미만이면 에러 메시지를 보여주는 폼을 만들어보세요."
+      description: "아이디와 비밀번호를 입력받고, 비밀번호가 8자 미만이면 에러 메시지를 보여주는 폼을 만들어보세요.",
+      solution: `function LoginForm() {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password.length < 8) {
+      setError("비밀번호는 8자 이상이어야 합니다.");
+      return;
+    }
+    alert(\`로그인 시도: \${id}\`);
+    setError("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        value={id} 
+        onChange={e => setId(e.target.value)} 
+        placeholder="ID" 
+      />
+      <input 
+        type="password" 
+        value={password} 
+        onChange={e => setPassword(e.target.value)} 
+        placeholder="Password" 
+      />
+      {error && <p style={{color: 'red'}}>{error}</p>}
+      <button type="submit">로그인</button>
+    </form>
+  );
+}`
     }
   },
   {
@@ -281,7 +406,22 @@ function Button() {
     ],
     challenge: {
       title: "다크 모드 버튼",
-      description: "버튼 하나를 만들고, 클릭 상태(활성/비활성)에 따라 색상이 완전히 바뀌는 스타일링을 적용해보세요."
+      description: "버튼 하나를 만들고, 클릭 상태(활성/비활성)에 따라 색상이 완전히 바뀌는 스타일링을 적용해보세요.",
+      solution: `import styles from './DarkModeBtn.module.css';
+// CSS: .dark { background: black; color: white; } .light { background: white; color: black; }
+
+function DarkModeBtn() {
+  const [isDark, setIsDark] = useState(false);
+
+  return (
+    <button 
+      className={isDark ? styles.dark : styles.light}
+      onClick={() => setIsDark(!isDark)}
+    >
+      {isDark ? "Dark Mode" : "Light Mode"}
+    </button>
+  );
+}`
     }
   },
   {
@@ -325,7 +465,16 @@ function Home() {
     ],
     challenge: {
       title: "간단한 블로그 라우팅",
-      description: "메인 페이지, 글 목록 페이지, 글 상세 페이지(/post/:id)를 만들고 라우팅을 연결해보세요. useParams를 사용하여 ID를 가져와보세요."
+      description: "메인 페이지, 글 목록 페이지, 글 상세 페이지(/post/:id)를 만들고 라우팅을 연결해보세요. useParams를 사용하여 ID를 가져와보세요.",
+      solution: `import { useParams } from "react-router-dom";
+
+function PostDetail() {
+  const { id } = useParams();
+  return <h1>포스트 ID: {id}</h1>;
+}
+
+// App.js
+// <Route path="/post/:id" element={<PostDetail />} />`
     }
   },
   {
@@ -358,7 +507,24 @@ function App() {
     ],
     challenge: {
       title: "테마 스위처 구현",
-      description: "Context를 사용하여 앱 전체의 테마(Light/Dark)를 토글하는 기능을 구현해보세요."
+      description: "Context를 사용하여 앱 전체의 테마(Light/Dark)를 토글하는 기능을 구현해보세요.",
+      solution: `const ThemeContext = createContext();
+
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+  const toggle = () => setTheme(t => t === "light" ? "dark" : "light");
+  
+  return (
+    <ThemeContext.Provider value={{ theme, toggle }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemedBtn() {
+  const { theme, toggle } = useContext(ThemeContext);
+  return <button onClick={toggle}>Current: {theme}</button>;
+}`
     }
   },
   {
@@ -384,7 +550,28 @@ function App() {
     ],
     challenge: {
       title: "렌더링 최적화 실험",
-      description: "console.log를 찍어보며, React.memo와 useCallback을 사용했을 때와 안 했을 때의 자식 컴포넌트 렌더링 횟수 차이를 확인해보세요."
+      description: "console.log를 찍어보며, React.memo와 useCallback을 사용했을 때와 안 했을 때의 자식 컴포넌트 렌더링 횟수 차이를 확인해보세요.",
+      solution: `const Child = React.memo(({ onClick }) => {
+  console.log("Child Render");
+  return <button onClick={onClick}>Click me</button>;
+});
+
+function Parent() {
+  const [count, setCount] = useState(0);
+  
+  // useCallback이 없으면 Parent가 렌더링될 때마다 함수가 새로 생성되어
+  // Child도 같이 리렌더링됨 (React.memo가 있어도)
+  const handleClick = useCallback(() => {
+    console.log("Clicked");
+  }, []);
+
+  return (
+    <>
+      <Child onClick={handleClick} />
+      <button onClick={() => setCount(c => c + 1)}>Count: {count}</button>
+    </>
+  );
+}`
     }
   },
   {
@@ -414,7 +601,37 @@ function App() {
     ],
     challenge: {
       title: "뉴스 뷰어 만들기",
-      description: "무료 API(예: JSONPlaceholder)를 사용하여 게시글 목록을 불러오고, 로딩 중일 때는 'Loading...'을, 에러 발생 시 에러 메시지를 보여주세요."
+      description: "무료 API(예: JSONPlaceholder)를 사용하여 게시글 목록을 불러오고, 로딩 중일 때는 'Loading...'을, 에러 발생 시 에러 메시지를 보여주세요.",
+      solution: `function NewsViewer() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const json = await res.json();
+        setData(json);
+      } catch (e) {
+        setError(e.message);
+      }
+      setLoading(false);
+    };
+    fetchNews();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return null;
+
+  return (
+    <ul>
+      {data.slice(0, 5).map(post => <li key={post.id}>{post.title}</li>)}
+    </ul>
+  );
+}`
     }
   },
   {
@@ -441,7 +658,28 @@ function App() {
     ],
     challenge: {
       title: "useFetch 훅 만들기",
-      description: "URL을 넣으면 { data, loading, error } 객체를 반환하는 useFetch 커스텀 훅을 직접 만들어보세요."
+      description: "URL을 넣으면 { data, loading, error } 객체를 반환하는 useFetch 커스텀 훅을 직접 만들어보세요.",
+      solution: `function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        setData(json);
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}`
     }
   },
   {
@@ -472,7 +710,23 @@ const dispatch = useDispatch();
     ],
     challenge: {
       title: "쇼핑카트 구현하기",
-      description: "Redux를 사용하여 상품 목록에서 '담기'를 누르면 장바구니에 추가되고, 장바구니에서 수량을 변경하는 기능을 구현해보세요."
+      description: "Redux를 사용하여 상품 목록에서 '담기'를 누르면 장바구니에 추가되고, 장바구니에서 수량을 변경하는 기능을 구현해보세요.",
+      solution: `// slice.js
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: [],
+  reducers: {
+    addItem: (state, action) => {
+      state.push(action.payload);
+    }
+  }
+});
+
+// Component
+const dispatch = useDispatch();
+<button onClick={() => dispatch(addItem({ id: 1, name: 'Apple' }))}>
+  Add to Cart
+</button>`
     }
   },
   {
