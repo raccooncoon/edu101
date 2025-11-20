@@ -137,9 +137,12 @@ function CodeBlock({ code }) {
   }, [code]);
 
   const highlightCode = (code) => {
+    // Preserve whitespace and line breaks
     let result = code
       .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+      .replace(/>/g, '&gt;')
+      .replace(/\n/g, '<<<NEWLINE>>>')
+      .replace(/ /g, '&nbsp;');
 
     // Keywords
     result = result.replace(/\b(import|from|export|default|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|new|class|extends|super|this)\b/g, '<span class="hl-keyword">$1</span>');
@@ -147,18 +150,21 @@ function CodeBlock({ code }) {
     // React hooks
     result = result.replace(/\b(useState|useEffect|useContext|useReducer|useCallback|useMemo|useRef)\b/g, '<span class="hl-hook">$1</span>');
 
-    // Strings
+    // Strings (handle escaped quotes)
     result = result.replace(/(['"`])((?:\\.|(?!\1)[^\\])*)\1/g, '<span class="hl-string">$1$2$1</span>');
 
+    // Template literals
+    result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
+
     // Comments
-    result = result.replace(/\/\/(.*?)$/gm, '<span class="hl-comment">//$1</span>');
+    result = result.replace(/\/\/(.*?)<<<NEWLINE>>>/g, '<span class="hl-comment">//$1</span><<<NEWLINE>>>');
     result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
 
     // Numbers
     result = result.replace(/\b(\d+)\b/g, '<span class="hl-number">$1</span>');
 
     // Function calls
-    result = result.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="hl-function">$1</span>');
+    result = result.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)&nbsp;*(?=\()/g, '<span class="hl-function">$1</span>');
 
     // JSX tags and components
     result = result.replace(/&lt;(\/?[A-Z][a-zA-Z0-9]*)/g, '&lt;<span class="hl-component">$1</span>');
@@ -172,6 +178,9 @@ function CodeBlock({ code }) {
 
     // Arrow functions
     result = result.replace(/=&gt;/g, '<span class="hl-operator">=&gt;</span>');
+
+    // Restore newlines
+    result = result.replace(/<<<NEWLINE>>>/g, '\n');
 
     return result;
   };
@@ -189,6 +198,55 @@ function App() {
     const saved = localStorage.getItem('completedDays');
     return saved ? JSON.parse(saved) : [];
   });
+
+  // URL 해시 기반 라우팅
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#day-')) {
+        const dayNum = parseInt(hash.replace('#day-', ''));
+        if (!isNaN(dayNum) && dayNum >= 1 && dayNum <= curriculum.length) {
+          setSelectedDay(dayNum);
+        }
+      } else {
+        setSelectedDay(null);
+      }
+    };
+
+    // 초기 로드 시 해시 확인
+    handleHashChange();
+
+    // 해시 변경 감지
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // 백스페이스 키로 메인으로 이동
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // 백스페이스 키이고, input/textarea에 포커스가 없을 때만
+      if (e.key === 'Backspace' && selectedDay !== null) {
+        const target = e.target;
+        const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
+        if (!isInput) {
+          e.preventDefault();
+          navigateToHome();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedDay]);
+
+  const navigateToDay = (dayId) => {
+    window.location.hash = `day-${dayId}`;
+  };
+
+  const navigateToHome = () => {
+    window.location.hash = '';
+  };
 
   const handleComplete = (dayId) => {
     let newCompleted;
@@ -212,16 +270,21 @@ function App() {
       <div className="app">
         <header className="header">
           <div className="container">
-            <div className="logo">
-              <div className="logo-icon">📚</div>
-              <span className="gradient-text">React 101</span>
+            <div className="header-content">
+              <div className="logo" onClick={navigateToHome} style={{ cursor: 'pointer' }}>
+                <div className="logo-icon">📚</div>
+                <span className="gradient-text">React 101</span>
+              </div>
+              <button onClick={navigateToHome} className="btn btn-outline btn-home">
+                🏠 메인으로
+              </button>
             </div>
           </div>
         </header>
 
         <main className="main-content">
           <div className="container lesson-container">
-            <button onClick={() => setSelectedDay(null)} className="back-btn">
+            <button onClick={navigateToHome} className="back-btn">
               ← 돌아가기
             </button>
 
@@ -268,7 +331,7 @@ function App() {
               </button>
 
               {nextLesson && (
-                <button onClick={() => setSelectedDay(nextLesson.day)} className="btn btn-primary">
+                <button onClick={() => navigateToDay(nextLesson.day)} className="btn btn-primary">
                   다음 수업 →
                 </button>
               )}
@@ -306,7 +369,7 @@ function App() {
                 <div
                   key={day.day}
                   className={`card ${isCompleted ? 'card-completed' : ''}`}
-                  onClick={() => setSelectedDay(day.day)}
+                  onClick={() => navigateToDay(day.day)}
                 >
                   {isCompleted && <div className="card-check">✓</div>}
 

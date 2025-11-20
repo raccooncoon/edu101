@@ -1,4 +1,3 @@
-
 export const curriculum = [
   {
     day: 1,
@@ -12,7 +11,7 @@ export const curriculum = [
       },
       {
         title: "JSX 소개",
-        content: "JSX는 JavaScript XML의 약자로, JavaScript 안에서 HTML 마크업을 작성할 수 있게 해줍니다. 브라우저가 이해하기 전에 변환 과정이 필요합니다.",
+        content: "JSX는 JavaScript XML의 약자로, JavaScript 안에서 HTML 마크업을 작성할 수 있게 해줍니다.",
         code: `function HelloWorld() {
   return <h1>Hello, World!</h1>;
 }`
@@ -45,7 +44,9 @@ const element = <h1>Hello, {name}</h1>;`
       {
         title: "Props 전달하기",
         content: "부모 컴포넌트에서 자식 컴포넌트로 데이터를 전달할 때 HTML 속성처럼 작성하여 전달합니다.",
-        code: `<Welcome name="Sara" />`
+        code: `function App() {
+  return <Welcome name="Sara" />;
+}`
       }
     ],
     challenge: {
@@ -62,17 +63,28 @@ const element = <h1>Hello, {name}</h1>;`
       {
         title: "useState 훅",
         content: "컴포넌트에 state 변수를 추가하기 위해 useState 훅을 사용합니다.",
-        code: `import { useState } from 'react';
+        code: `import { useState } from "react";
 
 function Counter() {
   const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      클릭 횟수: {count}
+    </button>
+  );
 }`
       },
       {
         title: "이벤트 핸들링",
         content: "React 요소의 이벤트 처리는 DOM 요소의 이벤트 처리와 매우 유사하지만, 캐멀 케이스(camelCase)를 사용합니다.",
-        code: `<button onClick={handleClick}>Click me</button>`
+        code: `function Button() {
+  const handleClick = () => {
+    alert("버튼이 클릭되었습니다!");
+  };
+  
+  return <button onClick={handleClick}>Click me</button>;
+}`
       }
     ],
     challenge: {
@@ -89,14 +101,30 @@ function Counter() {
       {
         title: "조건부 렌더링",
         content: "JavaScript의 if문이나 삼항 연산자(? :)를 사용하여 조건에 맞는 UI를 렌더링합니다.",
-        code: `<div>{isLoggedIn ? <LogoutButton /> : <LoginButton />}</div>`
+        code: `function Greeting({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? (
+        <LogoutButton />
+      ) : (
+        <LoginButton />
+      )}
+    </div>
+  );
+}`
       },
       {
         title: "리스트 렌더링",
         content: "map() 함수를 사용하여 배열을 엘리먼트 리스트로 변환합니다. 이때 key prop이 중요합니다.",
-        code: `const listItems = numbers.map((number) =>
-  <li key={number.toString()}>{number}</li>
-);`
+        code: `function NumberList({ numbers }) {
+  const listItems = numbers.map((number) => (
+    <li key={number.toString()}>
+      {number}
+    </li>
+  ));
+  
+  return <ul>{listItems}</ul>;
+}`
       }
     ],
     challenge: {
@@ -113,9 +141,21 @@ function Counter() {
       {
         title: "useEffect 훅",
         content: "컴포넌트가 렌더링 된 이후에 어떤 일을 수행해야 할 때 사용합니다.",
-        code: `useEffect(() => {
-  document.title = \`You clicked \${count} times\`;
-}, [count]); // count가 바뀔 때만 실행`
+        code: `import { useState, useEffect } from "react";
+
+function DocumentTitle() {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    document.title = \`You clicked \${count} times\`;
+  }, [count]); // count가 바뀔 때만 실행
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Click me
+    </button>
+  );
+}`
       }
     ],
     challenge: {
