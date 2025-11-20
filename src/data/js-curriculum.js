@@ -63,9 +63,9 @@ console.log(\`제 이름은 \${name}이고, 직업은 \${job}입니다.\`);`
                 title: "산술 및 비교 연산자",
                 content: "기본적인 사칙연산과 값의 크기를 비교하는 연산자입니다. ===는 값과 타입이 모두 같은지 비교합니다.",
                 code: `console.log(10 % 3);      // 1 (나머지)
-        console.log(2 ** 3);      // 8 (거듭제곱)
-        console.log(10 == "10");  // true (값만 비교)
-        console.log(10 === "10"); // false (타입까지 비교 - 권장)`
+console.log(2 ** 3);      // 8 (거듭제곱)
+console.log(10 == "10");  // true (값만 비교)
+console.log(10 === "10"); // false (타입까지 비교 - 권장)`
             },
             {
                 title: "논리 연산자와 Truthy/Falsy",
@@ -312,7 +312,7 @@ const num2 = count ?? 10; // 0 (0은 null/undefined가 아님)`
             },
             {
                 title: "모듈 시스템 (import/export)",
-                content: "코드를 여러 파일로 나누고 필요한 것만 가져와서 사용하는 방법입니다.",
+                content: "코드를 여러 파일로 나누고 필요한 것만 가져와서 사용하는 방법입니다. HTML에서 script 태그에 type='module' 속성이 필요합니다.",
                 code: `// math.js
 export const add = (a, b) => a + b;
 

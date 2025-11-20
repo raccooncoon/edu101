@@ -23,7 +23,7 @@ export const curriculum = [
       },
       {
         title: "JSX의 규칙과 Fragment",
-        content: "반드시 하나의 부모 요소로 감싸야 합니다. 불필요한 div를 추가하고 싶지 않다면 <React.Fragment> 또는 단축 문법인 <>...</>를 사용하세요.",
+        content: "반드시 하나의 부모 요소로 감싸야 합니다. HTML class 속성 대신 className을 사용해야 합니다. 불필요한 div를 추가하고 싶지 않다면 <React.Fragment> 또는 단축 문법인 <>...</>를 사용하세요.",
         code: `function App() {
   return (
     <>
@@ -588,8 +588,10 @@ function Parent() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/api/users');
-      setUsers(response.data);
+      const response = await fetch('/api/users');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const json = await response.json();
+      setUsers(json);
     } catch (e) {
       setError(e);
     }
@@ -697,7 +699,10 @@ function Parent() {
   reducers: {
     increment: state => { state.value += 1 }
   }
-});`
+});
+
+export const { increment } = counterSlice.actions;
+export default counterSlice.reducer;`
       },
       {
         title: "useSelector와 useDispatch",
@@ -746,7 +751,7 @@ function MyComponent() {
       <OtherComponent />
     </Suspense>
   );
-}`
+} `
       },
       {
         title: "배포하기 (Vercel/Netlify)",
