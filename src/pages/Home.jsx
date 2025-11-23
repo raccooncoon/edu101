@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { curriculum } from '../data/curriculum';
 import { Clock, ChevronRight, CheckCircle2 } from 'lucide-react';

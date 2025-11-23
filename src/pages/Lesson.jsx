@@ -1,6 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
 import { curriculum } from '../data/curriculum';
-import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle, ChevronRight, Code, Clock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
