@@ -15,9 +15,10 @@ export function LessonView({
     const [showSolution, setShowSolution] = useState(false);
     const isCompleted = !!completedDate;
 
-    // Reset solution visibility when lesson changes
+    // Reset solution visibility and scroll to top when lesson changes
     useEffect(() => {
         setShowSolution(false);
+        window.scrollTo(0, 0);
     }, [lesson.day]);
 
     const headerContent = (
