@@ -619,6 +619,7 @@ body {
   gap: 0.5rem;
   cursor: pointer;
   border: none;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -685,6 +686,10 @@ body {
 
   .btn {
     width: 100%;
+  }
+
+  .nav-buttons .btn {
+    width: auto;
   }
 }
 
