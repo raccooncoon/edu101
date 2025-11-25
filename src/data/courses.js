@@ -1,6 +1,8 @@
 import { curriculum as reactCurriculum } from './react-curriculum';
 import { jsCurriculum } from './js-curriculum';
 import { nodeCurriculum } from './node-curriculum';
+import { nestjsCurriculum } from './nestjs-curriculum';
+import { nextjsCurriculum } from './nextjs-curriculum';
 
 export const courses = [
     {
@@ -32,5 +34,25 @@ export const courses = [
         icon: '🟩',
         themeColor: 'node', // css class hook
         data: nodeCurriculum
+    },
+    {
+        id: 'nestjs',
+        title: 'NestJS 101',
+        description: 'Node.js의 스프링, NestJS로 견고하고 확장 가능한 백엔드 서버를 구축해보세요.',
+        heroTitle: 'NestJS 아키텍처 마스터',
+        heroDesc: '체계적인 모듈 시스템과 DI 패턴을 익히고, 엔터프라이즈급 백엔드 개발에 도전하세요.',
+        icon: '🦁',
+        themeColor: 'nestjs', // css class hook
+        data: nestjsCurriculum
+    },
+    {
+        id: 'nextjs',
+        title: 'Next.js 101',
+        description: 'React의 완성형 프레임워크. App Router부터 배포까지 풀스택 개발을 경험하세요.',
+        heroTitle: 'Next.js 풀스택 완성',
+        heroDesc: '서버 컴포넌트와 최신 기능을 활용하여 빠르고 SEO 친화적인 웹 애플리케이션을 만드세요.',
+        icon: '▲',
+        themeColor: 'nextjs', // css class hook
+        data: nextjsCurriculum
     }
 ];
