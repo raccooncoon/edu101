@@ -3,6 +3,7 @@ import { jsCurriculum } from './js-curriculum';
 import { nodeCurriculum } from './node-curriculum';
 import { nestjsCurriculum } from './nestjs-curriculum';
 import { nextjsCurriculum } from './nextjs-curriculum';
+import { expressCurriculum } from './express-curriculum';
 
 export const courses = [
     {
@@ -34,6 +35,16 @@ export const courses = [
         icon: '🟩',
         themeColor: 'node', // css class hook
         data: nodeCurriculum
+    },
+    {
+        id: 'express',
+        title: 'Express 101',
+        description: 'Node.js를 위한 빠르고 개방적인 웹 프레임워크. 미들웨어부터 DB 연동까지.',
+        heroTitle: 'Express 서버 구축',
+        heroDesc: '가장 인기 있는 Node.js 프레임워크로 강력하고 유연한 백엔드 API를 만들어보세요.',
+        icon: '🚂',
+        themeColor: 'express', // css class hook
+        data: expressCurriculum
     },
     {
         id: 'nestjs',
