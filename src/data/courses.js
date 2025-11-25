@@ -1,5 +1,6 @@
 import { curriculum as reactCurriculum } from './react-curriculum';
 import { jsCurriculum } from './js-curriculum';
+import { nodeCurriculum } from './node-curriculum';
 
 export const courses = [
     {
@@ -21,5 +22,15 @@ export const courses = [
         icon: '⚛️',
         themeColor: 'react', // css class hook
         data: reactCurriculum
+    },
+    {
+        id: 'node',
+        title: 'Node.js 101',
+        description: '자바스크립트로 서버를 만드는 첫걸음. Node.js의 핵심부터 Express 서버 구축까지.',
+        heroTitle: 'Node.js 백엔드 입문',
+        heroDesc: '프론트엔드를 넘어 백엔드까지, 자바스크립트 하나로 풀스택 개발자에 도전하세요.',
+        icon: '🟩',
+        themeColor: 'node', // css class hook
+        data: nodeCurriculum
     }
 ];
