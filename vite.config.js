@@ -6,6 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
     plugins: [react()],
+    base: '/edu101/',
     build: {
       outDir: env.BUILD_PATH || 'dist',
     },
