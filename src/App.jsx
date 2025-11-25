@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { courses } from './data/courses';
 import './App.css';
 import { useRoute } from './hooks/useRoute';
@@ -20,6 +21,11 @@ function App() {
     toggleComplete,
     getCompletedDate
   } = useProgress(course);
+
+  // Scroll to top whenever navigation changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [course, selectedDay]);
 
   // 현재 선택된 커리큘럼 데이터 가져오기
   const currentCourseData = courses.find(c => c.id === course);
